@@ -95,11 +95,10 @@ def clean_memory():
     global stored_images
     analyser._clean_memory()
     stored_images = list()
-    image_gallery = gr.Gallery(label="Visualization", columns=3, object_fit="contain", height="auto")  # Display images in 3 columns
-    user_prompt = gr.Textbox(label="Type your prompt here", interactive=True)
-    generated_text = gr.Textbox(label="Generated Text", interactive=False, lines=5)
+    user_prompt = ""
+    generated_text = ""
     
-    return image_gallery, user_prompt, generated_text
+    return stored_images, user_prompt, generated_text
     
 # Auto refresh on the background
 def background_process(keywords):
