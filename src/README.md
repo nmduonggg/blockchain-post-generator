@@ -24,9 +24,9 @@ python preprocess/processing.py
 3. Deploy application
 - For ocal deployment
 ```
-CUDA_VISIBLE_DEVICES=0 python main_app.py
+python main_app.py
 ```
 - For public and shareable link (3 days)
 ```
-CUDA_VISIBLE_DEVICES=0 python main_app.py --inbrowser --share
+python main_app.py --inbrowser --share
 ```

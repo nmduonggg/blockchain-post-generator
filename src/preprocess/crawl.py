@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 def main():
     
     now = datetime.now()
-    prev_days = 7
+    prev_days = 1
     
     
     save_folder = './local_database'

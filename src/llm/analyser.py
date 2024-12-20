@@ -27,7 +27,7 @@ class Agent():
     def __init__(self, root='./analysis', out_file = './generated_outputs.txt', initialize=True):
         super().__init__()
         self.processor, self.model = None, None
-        PROJECT_OPT_PATH = './analysis/projects/keywords/profile_list.json'
+        self.PROJECT_OPT_PATH = './analysis/projects/keywords/profile_list.json'
         
         
         if initialize:
@@ -40,7 +40,7 @@ class Agent():
         self.root=root
         self.out_file = out_file
         self.default_options = ['bnb', 'eth', 'projects']
-        with open(PROJECT_OPT_PATH, 'r') as f:
+        with open(self.PROJECT_OPT_PATH, 'r') as f:
             self.projects_list = json.load(f)
         self.project_options = [pj['name'] for pj in self.projects_list]
         self.all_options = self.default_options + self.project_options
@@ -75,6 +75,15 @@ class Agent():
         Do not repeat the request of users.
         """
         return prompt
+    
+    def reinit(self):
+        with open(self.PROJECT_OPT_PATH, 'r') as f:
+            self.projects_list = json.load(f)
+        self.project_options = [pj['name'] for pj in self.projects_list]
+        self.all_options = self.default_options + self.project_options
+        
+        
+        
         
     def get_all_options(self):
         return self.all_options

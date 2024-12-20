@@ -12,12 +12,14 @@ import threading
 
 ###-- INITIALIZATION --###
 
+analyser = Agent()
+generator = GPTWrapper()
+
 #-- construct insight keywords
 def construct_keywords():
     global analyser, generator
+    analyser.reinit()
     
-    analyser = Agent()
-    generator = GPTWrapper()
     keywords_converter = {
         'summary blockchain': 'bnb',
         'summary ethereum': 'eth',
@@ -99,7 +101,7 @@ def clean_memory():
     
     return image_gallery, user_prompt, generated_text
     
-# auto refresh on the background
+# Auto refresh on the background
 def background_process(keywords):
     global keywords_converter
     while True:
@@ -125,13 +127,14 @@ def ui_launch(launch_kwargs):
             ### Instructions:
             - Click into keywords to generate post based on our analysis on it.
             - The information and keywords are added incrementally leading to longer inference as the number of keywords grows up.
-            - To avoid it, please click "Clean Memory" button to reset.        
+            - To avoid it, please click "Clean Memory" button to reset.       
+            - To reset the insights, click "Refresh Insights". 
             """)
         
         with gr.Row():  # Left column with keyword options
             with gr.Column():
                 reset = gr.Button("Clean Memory")
-                refresh = gr.Button("Refresh")
+                refresh = gr.Button("Refresh Insights")
                 keywords = gr.Radio(keywords_converter.keys(), label="Select a Keyword")
             with gr.Column():  # Right column with generated text output
                 user_prompt = gr.Textbox(label="Type your prompt here", interactive=True)

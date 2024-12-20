@@ -1,8 +1,5 @@
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 from pmdarima import auto_arima
-from scipy.interpolate import interp1d
 
 def arima_pipeline(timestamps, values, n_predictions=500):
     
@@ -16,7 +13,8 @@ def arima_pipeline(timestamps, values, n_predictions=500):
                        start_q=100, max_q=500,
                        seasonal=False,
                        stepwise=False, trace=False,
-                       random=True, n_jobs=32, maxiter=50)
+                       random=True, n_jobs=32, maxiter=50,
+                       error_action='ignore')
     forecast = model.predict(n_predictions)
     
     additional_timestamps = (new_timestamps[-1] - new_timestamps[-2]) * np.arange(1, n_predictions+1) + timestamps[-1]
