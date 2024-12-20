@@ -69,7 +69,6 @@ def construct_keywords():
     return keywords_converter
 
 keywords_converter = construct_keywords()
-keywords_lock = threading.Lock()
 ##-------------------------##
 
 # Define a function to generate text based on selected keyword
@@ -94,8 +93,13 @@ def clean_memory():
     global stored_images
     analyser._clean_memory()
     stored_images = list()
+    image_gallery = gr.Gallery(label="Visualization", columns=3, object_fit="contain", height="auto")  # Display images in 3 columns
+    user_prompt = gr.Textbox(label="Type your prompt here", interactive=True)
+    generated_text = gr.Textbox(label="Generated Text", interactive=False, lines=5)
     
-# Example background task
+    return image_gallery, user_prompt, generated_text
+    
+# auto refresh on the background
 def background_process(keywords):
     global keywords_converter
     while True:
@@ -104,8 +108,7 @@ def background_process(keywords):
         # preprocess
         os.system("python ./preprocess/processing.py")
         
-        with keywords_lock:
-            keywords_converter = construct_keywords()
+        keywords_converter = construct_keywords()
         
         time.sleep(100)  # Simulate a background process
 
@@ -114,8 +117,7 @@ def update_keywords(keywords):
     return gr.Radio(keywords_converter.keys(), label="Select a Keyword")
 
 def ui_launch(launch_kwargs):
-
-    # Create a Gradio interface
+    
     with gr.Blocks() as demo:
         gr.Markdown(
             """
@@ -125,8 +127,6 @@ def ui_launch(launch_kwargs):
             - The information and keywords are added incrementally leading to longer inference as the number of keywords grows up.
             - To avoid it, please click "Clean Memory" button to reset.        
             """)
-        
-        keywords_state = gr.State(keywords_converter.keys())
         
         with gr.Row():  # Left column with keyword options
             with gr.Column():
@@ -144,7 +144,7 @@ def ui_launch(launch_kwargs):
             markdown = gr.Markdown(
                 label="Generated Text", show_copy_button=True)
         
-        reset.click(clean_memory, inputs=[], outputs=[])
+        reset.click(clean_memory, inputs=[], outputs=[image_gallery, user_prompt, generated_text])
         refresh.click(update_keywords, inputs=[], outputs=[keywords])
         
         keywords.change(setup_option, inputs=keywords, outputs=[])
@@ -155,11 +155,6 @@ def ui_launch(launch_kwargs):
         # Start background task in a separate thread
         thread = threading.Thread(target=background_process, args=[keywords, ], daemon=True)
         thread.start()
-        thread.join()
-        
-        
-
-        
         
         demo.launch(**launch_kwargs)
     
