@@ -5,8 +5,6 @@ import pytz
 import json
 from pymongo import MongoClient
 
-import preprocess.utils as utils
-
 KEY = "mongodb://dsReader:ds_reader_ndFwBkv3LsZYjtUS@178.128.85.210:27017,104.248.148.66:27017,103.253.146.224:27017"
 
 class BlocksCrawler():
