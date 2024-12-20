@@ -22,7 +22,7 @@ python preprocess/processing.py
 ```
 
 3. Deploy application
-- For ocal deployment
+- For local deployment
 ```
 python main_app.py
 ```
