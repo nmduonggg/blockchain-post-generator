@@ -4,7 +4,7 @@ from openai import OpenAI
 class GPTWrapper():
     def __init__(self):
         self.client = OpenAI()
-        self.MODEL = "gpt-4o-mini"
+        self.MODEL = "gpt-4o"
         self.SYSTEM = """
         You are a helpful assistant that excels in blockchain and bitcoin. You have lots of domain knowledge in blockchain and always support social influencers to grow their audience based on your knowledge.
         """

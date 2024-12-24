@@ -83,8 +83,6 @@ class Agent():
         self.all_options = self.default_options + self.project_options
         
         
-        
-        
     def get_all_options(self):
         return self.all_options
         

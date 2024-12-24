@@ -81,6 +81,10 @@ def setup_option(keyword):
 def run_analyser(user_prompt, keywords):
     analyser.forward(user_prompt)
     generation = generator.forward()
+    
+    with open('./final_post.txt', 'w') as f:
+        f.write(generation.content)
+    
     return generation.content, generation.content
 
 # Function to load images from a local directory
@@ -104,6 +108,8 @@ def clean_memory():
 def background_process(keywords):
     global keywords_converter
     while True:
+        time.sleep(3600)
+        
         # querying data
         os.system("python ./preprocess/crawl.py")
         # preprocess
@@ -111,7 +117,7 @@ def background_process(keywords):
         
         keywords_converter = construct_keywords()
         
-        time.sleep(100)  # Simulate a background process
+        time.sleep(3600)  # Simulate a background process
 
 def update_keywords(keywords):
     global keywords_converter
